@@ -1,6 +1,5 @@
-from server.utils.winkel_scraper import winkels
+from utils.winkel_scraper import winkels
 import flask
-import json
 
 app = flask.Flask(__name__)
 
