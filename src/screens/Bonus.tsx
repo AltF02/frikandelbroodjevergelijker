@@ -1,5 +1,5 @@
 import React from "react";
-import Winkel from "../components/Winkel";
+import WinkelCard from "../components/WinkelCard";
 import {ScrollView, Image, Text, View} from "react-native";
 
 export default class Bonus extends React.Component<any, any> {
@@ -7,7 +7,7 @@ export default class Bonus extends React.Component<any, any> {
         return (
             <View>
                 <ScrollView>
-                    <Winkel
+                    <WinkelCard
                         text="Lorem ipsum dolor sit amet,
                         consectetur adipiscing elit.
                         Vivamus gravida, metus eleifend

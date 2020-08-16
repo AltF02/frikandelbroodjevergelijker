@@ -27,7 +27,7 @@ def winkel(winkel_name):
                              prijs=winkel_class.prijs,
                              gram=winkel_class.gram)
     else:
-        flask.abort(404, description="Winkel niet gevonden")
+        flask.abort(404, description="WinkelCard niet gevonden")
 
 
 @app.route('/winkels')
