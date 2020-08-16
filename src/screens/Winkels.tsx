@@ -1,5 +1,7 @@
 import React from "react";
-import { Text, Spinner, View } from "native-base";
+import {Text, Spinner, View, Content} from "native-base";
+import Winkel from "../components/Winkel";
+import {ScrollView} from "react-native";
 
 export default class Winkels extends React.Component<any, any> {
     constructor(props: any) {
@@ -8,6 +10,7 @@ export default class Winkels extends React.Component<any, any> {
             data: [],
             loading: true
         }
+
     }
     componentDidMount() {
         fetch('http://192.168.178.17:5000/winkels')
@@ -20,18 +23,24 @@ export default class Winkels extends React.Component<any, any> {
             .catch((error) => console.error(error))
             .finally(() => this.setState({loading: false}));
     }
+    // <Text key={item.winkel}>{item.winkel}, {item.prijs.toFixed(2)}€, {item.gram}g</Text>
     render() {
         return (
-            <View style={{ flex: 1, padding: 50 }}>
-                {this.state.loading ? <Spinner color="blue"/> : (
-                    <View style={{padding: 30}}>
-                        {this.state.data.map(function (item: any) {
-                                return <Text key={item.winkel}>{item.winkel}, {item.prijs.toFixed(2)}€, {item.gram}g</Text>
-                            })
-                        }
-                    </View>
+            <View>
+                <View>
+                    {this.state.loading ? <Spinner color="blue"/> : (
+                        <View>
+                            <ScrollView>
+                                {this.state.data.map(function (item: any) {
+                                    return <Winkel winkel={item.winkel} key={item.winkel} text={item.prijs.toFixed(2) + '€,' + item.gram + 'g'}/>
 
-                )}
+                                })
+                                }
+                            </ScrollView>
+                        </View>
+
+                    )}
+                </View>
             </View>
         )
     }

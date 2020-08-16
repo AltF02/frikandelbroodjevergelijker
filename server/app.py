@@ -34,14 +34,37 @@ def winkel(winkel_name):
 def winkels():
     winkel_json = []
     for winkel, winkel_class in winkel_list.items():
+        winkel_class = winkel_class()
         winkel_json.append({
             "winkel": winkel,
-            "gram": winkel_class().gram,
-            "prijs": winkel_class().prijs
+            "gram": winkel_class.gram,
+            "prijs": winkel_class.prijs,
+            "bonus": winkel_class.bonus if hasattr(winkel_class, 'bonus') else False
         })
     return {
         "status": 200,
         "winkels": winkel_json
+    }
+
+
+@app.route('/bonus')
+def bonus():
+    bonus_json = []
+    for winkel, winkel_class in winkel_list.items():
+        try:
+            winkel_class = winkel_class()
+            if winkel_class.bonus:
+                bonus_json.append({
+                    "winkel": winkel,
+                    "bonus": winkel_class.bonus,
+                    "prijs": winkel_class.prijs
+                })
+        except AttributeError:
+            continue
+
+    return {
+        "status": 200,
+        "bonus": bonus_json
     }
 
 

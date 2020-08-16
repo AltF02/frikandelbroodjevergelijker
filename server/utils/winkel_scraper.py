@@ -20,15 +20,18 @@ class winkels:
 
         @property
         def prijs(self) -> float:
-            res = self.soup.find_all("div", class_='price-amount_root__vE9dJ product-card-hero-price_now__PlF9u')
-            euros = res[0].find('span', class_='price-amount_integer__N3JDd').text
-            centen = res[0].find('span', class_='price-amount_fractional__3sfJy').text
+            euros = self.soup.find('span', class_='price-amount_integer__N3JDd').text
+            centen = self.soup.find('span', class_='price-amount_fractional__3sfJy').text
             return float(euros + '.' + centen)
+
+        @property
+        def bonus(self) -> bool:
+            res = self.soup.find('div', attrs={"data-testhook": "promo-sticker"})
+            return True if res else False
 
     class dirk:
         def __init__(self):
-            winkels.driver.get(
-                'https://www.dirk.nl/boodschappen/brood-beleg-koek/afgebakken-brood-snacks/frikandelbroodje-xl-175-g/10614')
+            winkels.driver.get('https://www.dirk.nl/boodschappen/brood-beleg-koek/afgebakken-brood-snacks/frikandelbroodje-xl-175-g/10614')
             self.soup = BeautifulSoup(winkels.driver.page_source, features='html.parser')
 
         @property
@@ -41,6 +44,11 @@ class winkels:
             euros = self.soup.find('span', class_='product-card__price__euros').text
             centen = self.soup.find('span', class_='product-card__price__cents').text
             return float(euros + centen)
+
+        @property
+        def bonus(self) -> bool:
+            res = self.soup.find("div", class_="product-card__discount")
+            return True if res else False
 
     class jumbo:  # Jumbo blocked
         @property
@@ -74,6 +82,11 @@ class winkels:
             price = self.soup.find('span', class_='pricebox__price')
             return float(price.text)
 
+        @property
+        def bonus(self) -> bool:
+            res = self.soup.find('div', class_='pricebox__discount-wrapper')
+            return True if res.find('span', class_='pricebox__recommended-retail-price') else False
+
     class spar:
         def __init__(self):
             page = requests.get('https://www.spar.nl/frikandelbroodje-xl-5234492/')
@@ -89,3 +102,8 @@ class winkels:
             euros = self.soup.find("span", class_='c-price__euro').text
             centen = self.soup.find("span", class_='c-price__cent').text
             return float(euros + '.' + centen)
+
+        @property
+        def bonus(self) -> bool:
+            res = self.soup.find('div', class_='c-gallery__mark')
+            return True if res else False
